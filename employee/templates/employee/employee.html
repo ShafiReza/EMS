@@ -1,0 +1,101 @@
+{% extends 'employee_base/base_employee.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block body %}
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Office Time</p>
+                    <h6 class=" mb-0">Strart Time: {{office_time.office_start}}</h6>
+                    <h6 class=" mb-0">End Time: {{office_time.office_end}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Weekly Off Day</p>
+                    <h6 class="mb-0"> {{off_day1}},{{off_day2}} </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Date</p>
+                    <h6 class="mb-0"> <span id="date"></span></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Clock</p>
+                    <h6 class="mb-0"><span id="clock"></span> </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mt-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Present {{current_month}}</p>
+                    <h6 class="mb-0"> {{total_attendance}} </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Late Present</p>
+                    <h6 class="mb-0"> {{late}} /{{late_permited}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Over Time {{current_month}} </p>
+                    <h6 class="mb-0"> {{total_overtime}} </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Leave</p>
+                    <h6 class="mb-0"> {{total_leave}} /{{leave_permited}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<script>
+    function showTime() {
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const second = now.getSeconds();
+        const meridiem = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12; // Convert to 12-hour format
+        const timeString = `${hour12}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')} ${meridiem}`;
+        document.getElementById('clock').textContent = timeString;
+      }
+      
+      setInterval(showTime, 1000); // Update every second
+
+      const currentDate = new Date().toLocaleDateString();
+      document.querySelector('#date').textContent = currentDate;
+      
+</script>
+
+
+{% endblock body %}

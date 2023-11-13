@@ -1,0 +1,91 @@
+{% extends 'employee_base/base_employee.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock title %}
+
+
+
+{% block body %}
+<div class="col-sm-12 col-xl-12">
+    <div class="bg-white rounded h-100 p-4">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-primary" href="{% url 'report:leaveapplication_pdf' leave.id %}" target="_blank" role="button">Download</a>
+            <a class="btn btn-primary" href="{% url 'employee:apply_leave' %}" role="button"><i class="fa-solid fa-arrow-left me-2"></i>Back</a>
+          </div>
+        <h5 class="mb-4">Leave Details</h5>
+        <table class="table table-striped table-bordered">
+            <thead class="table-secondary">
+                <tr>
+                    <th scope="col">Fields</th>
+                    <th scope="col">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Employee Name</td>
+                    <td> {{leave.application_of.profile.first_name}}  {{leave.application_of.profile.last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Employee ID</td>
+                    <td> {{leave.employee_id}} </td>
+                </tr>
+                <tr>
+                    <td>Leave From</td>
+                    <td> {{leave.leave_from}} </td>
+                </tr>
+                <tr>
+                    <td>Leave To</td>
+                    <td> {{leave.leave_to}} </td>
+                </tr>
+                <tr>
+                    <td>Applied Days</td>
+                    <td> {{leave.total_days}}/{{leave_permonth.allowed_leave}}  (Allowed leave every month: {{leave_permonth.allowed_leave}} days)</td>
+                </tr>
+                <tr>
+                    <td>Leave Category</td>
+                    <td> {{leave.leave_type}} (Taken: {{total_leave_year}}/{{leave.leave_type.permited_days}})</td>
+                </tr>
+                <tr>
+                    <td>Accept/Reject Status</td>
+                    <td> 
+                        {% if leave.approved_status %}
+                            Accpted
+                        {% elif leave.declined_status %}
+                            rejected
+                        {% else %}
+                            Pending
+
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h6 class="text-white">Leave For</h6>
+            </div>
+            <div class="card-body">
+              
+              <p class="card-text"> {{leave.leave_description}} </p>
+            </div>
+        </div>
+        
+        {% if leave.declined_status %}
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h6 class="text-white">Leave For</h6>
+            </div>
+            <div class="card-body">
+              
+              <p class="card-text"> {{leave.declined_message}} </p>
+            </div>
+        </div>  
+        {% endif %}
+        <h6 class="my-4">Approved/Reject By</h6>
+        <img src=" {{leave.approvied_by.employee_info.signature.url}} " alt="" height="120" width="100">
+        <p>{{leave.approvied_by.profile.first_name}} {{leave.approvied_by.profile.last_name}}</p>
+    </div>
+</div>
+    
+{% endblock body %}
+    

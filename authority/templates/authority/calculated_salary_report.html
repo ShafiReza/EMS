@@ -1,0 +1,73 @@
+{% extends 'authority_base/authority_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block body %}
+<div class="bg-light rounded h-100 p-4">
+    <h6 class="mb-4">Calculated Salary List</h6>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+        {% if salarys %}
+            <a class="btn btn-primary" href="{% url 'report:salary_pdf' %}?{{ salarys|urlencode }}" target="_blank" role="button">Download</a>
+        {% endif %}
+      </div>
+    <div class="col-md-12 col-lg-12 mb-4">
+      <form class="d-flex">
+        <div class="row">
+            <div class="col">
+                {{salarys.form.employee_id | add_class:"form-control"}}
+            </div>
+            <div class="col">
+                {{salarys.form.salary_month | add_class:"form-select"}}
+            </div>
+            <div class="col">
+                {{salarys.form.festival_bonus |add_class:"form-select"}}
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-success ms-2" type="submit">Search</button>
+            </div>
+          </div>
+      </form>
+    </div>
+    
+    <table class="table table-bordered table-striped table-hover ">
+        <thead>
+            <tr>
+              <th scope="col">Sl</th>
+              <th scope="col">Employee ID</th>
+              <th scope="col">Employee Name</th>
+              <th scope="col">Month</th>
+              <th scope="col">Festival Bonus</th>
+              <th scope="col">Total Diduct</th>
+              <th scope="col">Total Absence</th>
+              <th scope="col">Total Pay</th>
+            </tr>
+          </thead>
+          <tbody> 
+            {% if salarys %} 
+                {% for salary in salarys.qs %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td> {{salary.salary_employee.employee_id}} </td>
+                    <td> {{salary.salary_employee.info_of.profile.first_name}} {{salary.salary_employee.info_of.profile.last_name}}</td>
+                    <td>{{salary.salary_month}}</td>
+                    <td>
+                        {% if salary.festival_bonus %}
+                            {{salary.festival_bonus.festival_name}}
+                        {% else %}
+                            N/A
+                        {% endif %}</td>
+                    <td>{{salary.total_diduct |floatformat:3}}</td>
+                    <td>{{salary.total_absence}}</td>
+                    <td>
+                        {{salary.get_totals | floatformat:3}}
+                    </td>
+                  </tr>
+                {% endfor %}     
+            {% endif %}
+            </tbody>      
+      </table>
+</div>
+    
+{% endblock body %}

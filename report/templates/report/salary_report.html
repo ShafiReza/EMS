@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Leave Application </title>
+    <style>
+        .table-container {
+            background-color: #eee;
+            font-size: 16px;
+          }
+          
+          table {
+            width: 100%;
+            border: 1px solid #F9F5E7;
+            border-collapse: collapse;
+          }
+          th {
+            background-color: #85CDFD;
+            color: #000;
+            
+        }
+          
+         
+          .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #ccc;
+            padding: 5px;
+            margin-top: 10px;
+            max-width: 400px;
+          }
+          
+          .card-header {
+            background-color: #007bff;
+            color: #000;
+            font-size: 15px;
+            padding: 6px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+          }
+          
+          .card-content {
+            font-size: 16px;
+            padding: 10px;
+          }
+          .signature-container {
+            margin-top: 10px;
+            align-items: center;
+            max-width: 500px;
+          }
+          
+          .signature-image {
+            width: 150px;
+            height: 100px;
+            margin-top: 10px;
+            margin-right: 20px;
+          }
+          
+        
+          .name {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          
+          .department {
+            font-size: 18px;
+          }
+          .application-head{
+            font-size: 20px;
+          }
+
+    </style>
+</head>
+<body>
+    <h1 class="application-head">Monthly Salary Report</h1>
+    <div class="table-container">
+        <table >
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Month</th>
+                <th>Festival Bonus</th>
+                <th>Total Absence</th>
+                <th>Total Diduct</th>
+                <th>Total Pay</th>
+            </tr>
+            {% if salarys %} 
+                {% for salary in salarys %}
+                <tr>
+                    <td> {{salary.salary_employee.employee_id}} </td>
+                    <td> {{salary.salary_employee.info_of.profile.first_name}} {{salary.salary_employee.info_of.profile.last_name}}</td>
+                    <td>{{salary.salary_month}}</td>
+                    <td>
+                        {% if salary.festival_bonus %}
+                            {{salary.festival_bonus.festival_name}}
+                        {% else %}
+                            N/A
+                        {% endif %}</td>
+                    <td>{{salary.total_absence}}</td>
+                    <td>{{salary.total_diduct |floatformat:3}}</td>
+                    
+                    <td>
+                        {{salary.get_totals | floatformat:3}}
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% endif %}
+        </table> 
+    </div>
+      
+    
+</body>
+</html>

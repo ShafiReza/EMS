@@ -1,0 +1,52 @@
+{% extends 'authority_base/authority_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} {{title}} {% endblock title %}
+
+
+{% block body %}
+<div class="bg-light rounded h-100 p-4">
+    <h6 class="mb-4">Employee List</h6>
+    <div class="col-md-6 mb-4">
+      <form class="d-flex">
+        {{employees.form.email}}
+        <button class="btn btn-primary ms-2" type="submit">Search</button>
+      </form>
+    </div>
+    
+    <table class="table table table-hover ">
+        <thead class="table-dark">
+            <tr>
+              <th scope="col">Sl</th>
+              <th scope="col">Email</th>
+              <th scope="col">Employee</th>
+              <th scope="col">Admin</th>
+              <th scope="col">Active</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody> 
+            {% if employees %} 
+                {% for employee in employees.qs %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td> {{employee.email}} </td>
+                    <td> {{employee.is_employee}} </td>
+                    <td>{{employee.is_staff}}</td>
+                    <td>{{employee.is_active}}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'authority:employee_details' employee.id %}" role="button">View</a>
+                        <a class="btn btn-success" href="{% url 'authority:edit_employee' employee.id %}" role="button">Edit</a>
+                        <a class="btn btn-success" href="{% url 'authority:edit_address' employee.id %}" role="button">Address</a>
+                        <a class="btn btn-success" href="{% url 'authority:edit_salary' employee.id %}" role="button">Salary</a>
+                        <a class="btn btn-danger" href="{% url 'authority:delete_employee' employee.id %}" role="button">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}     
+            {% endif %}
+            </tbody>      
+      </table>
+</div>
+
+{% endblock body %}
